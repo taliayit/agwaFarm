@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, TextInput, Image, Alert } from 'react-native';
 import Parse from "parse/react-native.js";
+import {useNavigation} from '@react-navigation/native';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // use useNavigation hook
+    const navigation = useNavigation();
+
     const doUserLogIn = async function () {
-        // Note that these values come from state variables that we've declared before
         const usernameValue = email;
         const passwordValue = password;
         return await Parse.User.logIn(usernameValue, passwordValue)
@@ -20,6 +23,8 @@ export default function Login() {
             // To verify that this is in fact the current user, currentAsync can be used
             const currentUser = await Parse.User.currentAsync();
             console.log(loggedInUser === currentUser);
+            // navigate home screen
+            navigation.navigate('Home');
             return true;
           })
           .catch((error) => {
@@ -68,7 +73,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
-        width: "70%",
+        width: "100%",
+        padding: "15%"
     },
     title: {
         fontSize: 34,
