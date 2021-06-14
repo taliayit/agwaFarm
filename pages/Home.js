@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
 import Parse from "parse/react-native.js";
+import Farm from '../components/Farm'
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
@@ -62,7 +63,7 @@ export default function Home() {
       <Text onPress={createFarm}>add</Text>
       {farms.length > 0 && <ScrollView>
         {farms.map(farm => (
-            <Text key={farm.id}>{farm.id}</Text>
+            <Farm key={farm.id} name={farm.get('name')}/>
         ))}
       </ScrollView>}
     </View>
