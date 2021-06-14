@@ -19,15 +19,21 @@ export default function Home() {
       if (currentUser !== null) {
           // update active user and get his agwa farms
           setActiveUser(currentUser);
-          readFarms();
       }
     }
     getCurrentUser();
   }, []);
 
+  useEffect(() => {
+    if(activeUser) {
+      readFarms();
+    }
+  }, [activeUser]);
+
   const readFarms = async function () {
-    // read parse objects
+    // read parse objects and filter by user id
     const parseQuery = new Parse.Query('Farm');
+    parseQuery.equalTo("userId", activeUser);
     try {
       let farms = await parseQuery.find();
       console.log(farms);
