@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, TextInput, Image, Alert } from 'react-native';
+import Parse from "parse/react-native.js";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const doUserLogIn = async function () {
+        // Note that these values come from state variables that we've declared before
+        const usernameValue = email;
+        const passwordValue = password;
+        return await Parse.User.logIn(usernameValue, passwordValue)
+          .then(async (loggedInUser) => {
+            // logIn returns the corresponding ParseUser object
+            Alert.alert(
+              'Success!',
+              `User ${loggedInUser.get('username')} has successfully signed in!`,
+            );
+            // To verify that this is in fact the current user, currentAsync can be used
+            const currentUser = await Parse.User.currentAsync();
+            console.log(loggedInUser === currentUser);
+            return true;
+          })
+          .catch((error) => {
+            // Error can be caused by wrong parameters or lack of Internet connection
+            Alert.alert('Error!', error.message);
+            return false;
+          });
+    };
+    
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Agwa Farm</Text>
@@ -13,6 +37,7 @@ export default function Login() {
                 <TextInput
                     style={styles.TextInput}
                     placeholder="Email"
+                    keyboardType={'email-address'}
                     onChangeText={(email) => setEmail(email)}
                 />
             </View>
@@ -26,7 +51,7 @@ export default function Login() {
                 />
             </View>
 
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity style={styles.loginBtn} onPress={() => doUserLogIn()}>
                 <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity>
 
@@ -62,7 +87,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: "100%",
         flex: 1,
-        padding: 15,
+        padding: 10,
     },
     loginBtn: {
         width: "100%",
