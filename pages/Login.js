@@ -36,7 +36,7 @@ export default function Login() {
     
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Agwa Farm</Text>
+            <Image style={styles.image} source={require("../assets/images/logo.png")} />
 
             <View style={styles.inputView}>
                 <TextInput
@@ -76,10 +76,9 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: "15%"
     },
-    title: {
-        fontSize: 34,
-        fontWeight:"bold",
-        marginBottom: 30
+    image: {
+        width: 200,
+        height: 200
     },
     inputView: {
         width:"100%",
