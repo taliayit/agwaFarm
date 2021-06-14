@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
-export default function Farm({name}) {
+export default function FarmItem({name}) {
     return (
         <View style={styles.container}>
             <Image style={styles.icon} source={require("../assets/images/icon.png")} />

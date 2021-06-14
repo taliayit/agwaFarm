@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import Parse from "parse/react-native.js";
-import Farm from '../components/Farm'
+import FarmItem from '../components/FarmItem'
 import AddItemBox from '../components/AddItemBox';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
   const [input, setInput] = useState('');
+
+  // use useNavigation hook
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -71,13 +75,14 @@ export default function Home() {
       
       {farms.length > 0 && <ScrollView>
         {farms.map(farm => (
-            <Farm key={farm.id} name={farm.get('name')}/>
+          <TouchableOpacity key={farm.id} onPress={() => {navigation.navigate('Farm', {farmId: farm.id})}} >
+            <FarmItem name={farm.get('name')} />
+          </TouchableOpacity>
         ))}
       </ScrollView>}
 
       <View style={styles.addBoxWrapper}>
         <AddItemBox 
-          
           placeholder="New Agwa Farm . . ."
           inputText={input}
           onInputChange={text => setInput(text)}
