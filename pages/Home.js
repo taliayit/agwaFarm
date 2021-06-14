@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
 import Parse from "parse/react-native.js";
 import Farm from '../components/Farm'
+import AddItemBox from '../components/AddItemBox';
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -37,7 +39,7 @@ export default function Home() {
 
   const createFarm = async function () {
     if(activeUser) {
-      const newFarmName = `Agwa Farm ${farms.length + 1}`;
+      const newFarmName = input;
       // create a new Farm parse object instance
       let Farm = new Parse.Object('Farm');
       Farm.set('name', newFarmName);
@@ -57,25 +59,42 @@ export default function Home() {
       };
     }
   };
+
+  const handleCreateFarm = function () {
+    createFarm();
+    setInput('');
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.homeTitle}>Your Agwa Farms</Text>
-      <Text onPress={createFarm}>add</Text>
+      
       {farms.length > 0 && <ScrollView>
         {farms.map(farm => (
             <Farm key={farm.id} name={farm.get('name')}/>
         ))}
       </ScrollView>}
+
+      <View style={styles.addBoxWrapper}>
+        <AddItemBox 
+          
+          placeholder="New Agwa Farm . . ."
+          inputText={input}
+          onInputChange={text => setInput(text)}
+          onCreateFarm={handleCreateFarm}/>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30
+    padding: 30,
+    flex: 1
   },
   homeTitle: {
     fontWeight: "bold",
-    fontSize: 30
+    fontSize: 30,
+    marginBottom: 20
   },
 });
