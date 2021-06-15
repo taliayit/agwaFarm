@@ -2,19 +2,26 @@ import React, { useState } from 'react';
 import { CheckBox, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import InputSpinner from "react-native-input-spinner";
 
-export default function PlantItem({plant, min, max, onQtyChange}) {
+export default function PlantItem({plant, min, max, onPlantChange}) {
     const [quantity, setQuantity] = useState(plant.quantity);
     const [isSelected, setSelection] = useState(false);
 
     function handleCheckboxChange(value) {
-        if(value === false) { 
+        if(value === false) {
+            onPlantChange(plant.id, 0);
             setQuantity(0);
         }
         else {
+            onPlantChange(plant.id, 1);
             setQuantity(1);
         }
         setSelection(value);
     }
+
+    function handleQtyChange(qty) {
+        onPlantChange(plant.id, qty);
+        setQuantity(qty);
+    } 
 
     return (
         <View style={styles.container}>
@@ -39,7 +46,7 @@ export default function PlantItem({plant, min, max, onQtyChange}) {
                         buttonStyle={{width:20, height:20}}
                         color={"#fff"}
                         value={quantity}
-                        onChange={(num) => {setQuantity(num)}}
+                        onChange={handleQtyChange}
                     />
                 </View>
 

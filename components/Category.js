@@ -2,13 +2,19 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import PlantItem from './PlantItem';
 
-export default function Category({category}) {
+export default function Category({category, onPlantChange}) {
     return (
         <View style={styles.container}>
             <Text style={styles.categoryName}>{category.name}</Text>
             
             {category.plants.map(plant => (
-                <PlantItem key={plant.id} plant={plant} min={category.minSelection} max={category.maxSelection}/>
+                <PlantItem 
+                    key={plant.id}
+                    plant={plant}
+                    min={category.minSelection}
+                    max={category.maxSelection}
+                    onPlantChange={onPlantChange}
+                />
             ))}
         </View>
     )

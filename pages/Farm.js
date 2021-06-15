@@ -23,13 +23,16 @@ export default function Farm({route}) {
     //     }    
     //     getCategories();
     // }, [])
-
+    function updatePlant(id, qty) {
+        console.log(id);
+        console.log(qty)
+    }
   
     return (
         <View style={styles.container}>
             {categories && <View>
                 {categories.map(category => (
-                    <Category key={category.id} category={category} />
+                    <Category key={category.id} category={category} onPlantChange={updatePlant}/>
                 ))}
             </View>}
         </View>
