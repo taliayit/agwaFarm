@@ -9,6 +9,8 @@ import Farm from './pages/Farm';
 import { I18nManager } from "react-native";
 
 export default function App() {
+  var React = require('react');
+
   // force LTR layout for RTL devices
   I18nManager.forceRTL(false);
   I18nManager.allowRTL(false);
