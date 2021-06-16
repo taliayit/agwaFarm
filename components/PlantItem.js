@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import InputSpinner from "react-native-input-spinner";
 import Checkbox from '../components/Checkbox';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PlantItem({plant, min, max, onPlantChange}) {
     const [quantity, setQuantity] = useState(plant.quantity);
     const [selected, setSelected] = useState(plant.quantity > 0);
+    
+    // use useNavigation hook
+    const navigation = useNavigation();
 
     function handleCheckboxChange(value) {
         if(value === false) {
@@ -31,7 +35,7 @@ export default function PlantItem({plant, min, max, onPlantChange}) {
             </View>
 
             <View style={[styles.itemContainer, selected ? styles.selected : ""]}>
-                <Image style={styles.image} source={plant.image ? plant.image : require("../assets/images/plant.png")} />
+                <Image style={styles.image} source={plant.image ? {uri:plant.image} : require("../assets/images/plant.png")} />
                 <View style={styles.textWrapper}>
                     <Text style={styles.name}>{plant.name}</Text>
                     <InputSpinner
@@ -50,7 +54,7 @@ export default function PlantItem({plant, min, max, onPlantChange}) {
                     />
                 </View>
 
-                <TouchableOpacity style={styles.infoWrapper} onPress={() => {console.log("info pressed")}}>
+                <TouchableOpacity style={styles.infoWrapper} onPress={()=>navigation.navigate('Plant', {plant: plant})}>
                     <Image style={styles.infoIcon} source={require("../assets/images/info_icon.png")} />
                 </TouchableOpacity>
             </View>

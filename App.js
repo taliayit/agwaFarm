@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Farm from './pages/Farm';
 import { I18nManager } from "react-native";
+import Plant from './pages/Plant';
 
 export default function App() {
   var React = require('react');
@@ -29,6 +30,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Farm" component={Farm} />
+        <Stack.Screen name="Plant" component={Plant} />
       </Stack.Navigator>
     </NavigationContainer>
   );
