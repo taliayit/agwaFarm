@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { CheckBox, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import InputSpinner from "react-native-input-spinner";
+import Checkbox from '../components/Checkbox';
 
 export default function PlantItem({plant, min, max, onPlantChange}) {
     const [quantity, setQuantity] = useState(plant.quantity);
-    const [isSelected, setSelection] = useState(false);
+    const [selected, setSelected] = useState(plant.quantity > 0);
 
     function handleCheckboxChange(value) {
         if(value === false) {
@@ -15,7 +16,7 @@ export default function PlantItem({plant, min, max, onPlantChange}) {
             onPlantChange(plant.id, 1);
             setQuantity(1);
         }
-        setSelection(value);
+        setSelected(value);
     }
 
     function handleQtyChange(qty) {
@@ -25,24 +26,23 @@ export default function PlantItem({plant, min, max, onPlantChange}) {
 
     return (
         <View style={styles.container}>
-            <CheckBox
-                value={isSelected}
-                onValueChange={handleCheckboxChange}
-                style={styles.checkbox}
-            />
-            <View style={[styles.itemContainer, isSelected ? styles.selected : ""]}>
-                <Image style={styles.image} source={plant.image ? plant.image : "https://can-plant.ca/userContent/images/Page%20Content/Home/ferns-and-allies1.png"} />
+            <View style={styles.checkboxWrapper}>
+                <Checkbox size={20} color="#6dc474" isChecked={selected} onValueChange={handleCheckboxChange}/>
+            </View>
+
+            <View style={[styles.itemContainer, selected ? styles.selected : ""]}>
+                <Image style={styles.image} source={plant.image ? plant.image : require("../assets/images/plant.png")} />
                 <View style={styles.textWrapper}>
                     <Text style={styles.name}>{plant.name}</Text>
                     <InputSpinner
                         max={max}
                         min={min}
-                        onMin={() => setSelection(false)}
-                        onIncrease={() => setSelection(true)}
+                        onMin={() => setSelected(false)}
+                        onIncrease={() => setSelected(true)}
                         width={75}
                         height={30}
                         buttonFontSize={15}
-                        arrows={true}
+                        // arrows={true}
                         buttonStyle={{width:20, height:20}}
                         color={"#fff"}
                         value={quantity}
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-around"
-
+        justifyContent: "space-around",
+        marginBottom: 15,
+        
     },
     itemContainer: {
         backgroundColor: "#fff",
-        marginBottom: 15,
         padding: 10,
         flexDirection: "row",
         alignItems: "center",
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         maxWidth: 150,
         marginBottom:10,
-        fontWeight:500
+        fontWeight:"500"
     },
     image: {
         width: 80,
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     textWrapper: {
         
     },
-    checkbox: {
-        marginRight: 10
+    checkboxWrapper: {
+        marginRight: 30,
     },
     selected: {
-        outlineWidth: 2,
-        outlineColor: "rgb(0, 150, 136)",
-        outlineStyle: "solid"
+        borderWidth: 2,
+        borderColor: "#6dc474",
+        borderStyle: "solid"
     }
 });
