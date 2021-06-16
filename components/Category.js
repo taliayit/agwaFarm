@@ -13,7 +13,7 @@ export default function Category({category, onPlantChange}) {
                     plant={plant}
                     min={category.minSelection}
                     max={category.maxSelection}
-                    onPlantChange={onPlantChange}
+                    onPlantChange={(id,qty) => onPlantChange(id,qty,category.id)}
                 />
             ))}
         </View>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     categoryName: {
         fontSize: 22,
-        fontWeight: 500,
+        fontWeight: "500",
         marginVertical: 10
     }
 });
