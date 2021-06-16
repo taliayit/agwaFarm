@@ -5,6 +5,7 @@ import FarmItem from '../components/FarmItem'
 import AddItemBox from '../components/AddItemBox';
 import { useNavigation } from '@react-navigation/native';
 import categoriesJson from '../data/categories.json';
+import plantsJson from '../data/plants.json';
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
@@ -55,7 +56,10 @@ export default function Home() {
       let Farm = new Parse.Object('Farm');
       Farm.set('name', newFarmName);
       Farm.set('userId', activeUser);
-      Farm.set('categories', categoriesJson);
+
+      let categories = categoriesJson
+      setImages(categories);
+      Farm.set('categories', categories);
 
       // save farm on the server
       try {
@@ -72,6 +76,17 @@ export default function Home() {
       };
     }
   };
+
+  const setImages = function (categories) {
+    categories.forEach(c => {
+      c.plants.forEach(p1 => {
+        let plant = plantsJson.find(p2 => p2.id === p1.id);
+        if(plant)
+          p1.image = `https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/images/vegetables/${plant.imageId}@3x.jpg`
+      })
+      return c;
+    });
+  }
 
   const handleCreateFarm = function () {
     createFarm();
