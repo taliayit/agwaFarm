@@ -4,6 +4,7 @@ import Parse from "parse/react-native.js";
 import FarmItem from '../components/FarmItem'
 import AddItemBox from '../components/AddItemBox';
 import { useNavigation } from '@react-navigation/native';
+import categoriesJson from '../data/categories.json';
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
@@ -54,6 +55,8 @@ export default function Home() {
       let Farm = new Parse.Object('Farm');
       Farm.set('name', newFarmName);
       Farm.set('userId', activeUser);
+      Farm.set('categories', categoriesJson);
+
       // save farm on the server
       try {
         await Farm.save();
@@ -81,7 +84,7 @@ export default function Home() {
       
       {farms.length > 0 && <ScrollView>
         {farms.map(farm => (
-          <TouchableOpacity key={farm.id} onPress={() => {navigation.navigate('Farm', {farmId: farm.id})}} >
+          <TouchableOpacity key={farm.id} onPress={() => {navigation.navigate('Farm', {farmId: farm.id, farmName: farm.get('name')})}} >
             <FarmItem name={farm.get('name')} />
           </TouchableOpacity>
         ))}
@@ -104,8 +107,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   homeTitle: {
-    fontWeight: "bold",
-    fontSize: 30,
+    fontWeight: "500",
+    fontSize: 22,
     marginBottom: 20
   },
+  addBoxWrapper: {
+    marginTop: "auto"
+  }
+
 });
