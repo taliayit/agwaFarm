@@ -28,15 +28,13 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
   },
   input: {
-    width: "100%",
+    width: "80%",
     paddingVertical: 15,
     paddingHorizontal: 15,
     backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd"
   },
   addWrapper: {
     width: 50,

@@ -38,7 +38,6 @@ export default function Home() {
     parseQuery.equalTo("userId", activeUser);
     try {
       let farms = await parseQuery.find();
-      console.log(farms);
       // set results to state variable
       setFarms(farms);
       return true;

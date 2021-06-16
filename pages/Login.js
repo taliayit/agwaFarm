@@ -22,7 +22,6 @@ export default function Login() {
             );
             // To verify that this is in fact the current user, currentAsync can be used
             const currentUser = await Parse.User.currentAsync();
-            console.log(loggedInUser === currentUser);
             // navigate home screen
             navigation.navigate('Home');
             return true;
