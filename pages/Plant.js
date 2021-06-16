@@ -5,7 +5,13 @@ import plantsJson from '../data/plants.json';
 
 export default function Plant({route, navigation}) {
     const { plant } = route.params;
-    const desc = plantsJson.find(p => p.id === plant.id).description;
+    const plantInfo = plantsJson.find(p => p.id === plant.id);
+    let desc = "";
+
+    if(plantInfo)
+        desc = plantInfo.description;
+    else
+        desc = "No description."
 
     useEffect(() => {
         // set navigation title
