@@ -4,7 +4,6 @@ import Parse from "parse/react-native.js";
 import FarmItem from '../components/FarmItem'
 import AddItemBox from '../components/AddItemBox';
 import { useNavigation } from '@react-navigation/native';
-import plantsJson from '../data/plants.json';
 import axios from 'axios';
 
 export default function Home() {
@@ -98,11 +97,10 @@ export default function Home() {
   const setImages = function () {
     categories.forEach(c => {
       c.plants.forEach(p1 => {
-        let plant = plantsJson.find(p2 => p2.id === p1.id);
+        let plant = plantsData.find(p2 => p2.id === p1.id);
         if(plant)
           p1.image = `https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/images/vegetables/${plant.imageId}@3x.jpg`
       })
-      return c;
     });
   }
 
@@ -117,7 +115,10 @@ export default function Home() {
       
       {farms.length > 0 && <ScrollView>
         {farms.map(farm => (
-          <TouchableOpacity key={farm.id} onPress={() => {navigation.navigate('Farm', {farmId: farm.id, farmName: farm.get('name')})}} >
+          <TouchableOpacity 
+            key={farm.id} 
+            onPress={() => {navigation.navigate('Farm', {farmId: farm.id, farmName: farm.get('name')})}}
+          >
             <FarmItem name={farm.get('name')} />
           </TouchableOpacity>
         ))}
