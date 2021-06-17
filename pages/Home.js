@@ -4,13 +4,14 @@ import Parse from "parse/react-native.js";
 import FarmItem from '../components/FarmItem'
 import AddItemBox from '../components/AddItemBox';
 import { useNavigation } from '@react-navigation/native';
-import categoriesJson from '../data/categories.json';
 import plantsJson from '../data/plants.json';
+import axios from 'axios';
 
 export default function Home() {
   const [farms, setFarms] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
   const [input, setInput] = useState('');
+  let categories = null;
 
   // use useNavigation hook
   const navigation = useNavigation();
@@ -48,16 +49,28 @@ export default function Home() {
     };
   };
 
-  const createFarm = async function () {
+  async function createFarm() {
+    // send http request to a proxy to allow access
+    const url = "https://cors-anywhere.herokuapp.com/https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json";
+
+    axios.get(url, { headers: {'Access-Control-Allow-Origin': '*'}}).then(response => {
+      categories = response.data.categories;
+      if(categories) {
+        setImages();
+        addFarmToDB();  
+      }
+    }).catch(function(error) {
+      console.error(error);
+    })
+  }    
+
+  const addFarmToDB = async function () {
     if(activeUser) {
       const newFarmName = input;
       // create a new Farm parse object instance
       let Farm = new Parse.Object('Farm');
       Farm.set('name', newFarmName);
       Farm.set('userId', activeUser);
-
-      let categories = categoriesJson
-      setImages(categories);
       Farm.set('categories', categories);
 
       // save farm on the server
@@ -76,7 +89,7 @@ export default function Home() {
     }
   };
 
-  const setImages = function (categories) {
+  const setImages = function () {
     categories.forEach(c => {
       c.plants.forEach(p1 => {
         let plant = plantsJson.find(p2 => p2.id === p1.id);

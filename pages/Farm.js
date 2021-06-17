@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
@@ -17,21 +16,6 @@ export default function Farm({route, navigation}) {
         readFarmPlants();
     }, []);
     
-    // useEffect(() => {
-    //     async function getCategories() {
-    //         const url = "https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json";
-
-    //         const plants = axios.get(url).then(response => {
-    //             console.log(response.categories);
-    //             categories = response.categories;
-    //         }).catch(function(error) {
-    //             console.error(error);
-    //             Alert.alert(error)
-    //         })
-    //     }    
-    //     getCategories();
-    // }, [])
-
     const readFarmPlants = async function () {
         // read parse objects and filter by farm id
         const parseQuery = new Parse.Query('Farm');
