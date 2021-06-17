@@ -12,6 +12,7 @@ export default function Home() {
   const [activeUser, setActiveUser] = useState(null);
   const [input, setInput] = useState('');
   let categories = null;
+  let plantsData = null;
 
   // use useNavigation hook
   const navigation = useNavigation();
@@ -50,19 +51,24 @@ export default function Home() {
   };
 
   async function createFarm() {
-    // send http request to a proxy to allow access
-    const url = "https://cors-anywhere.herokuapp.com/https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json";
+    const categoriesURL = "https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/agwafarm.json";
+    const plantsURL = "https://dev-agwa-public-static-assets-web.s3-us-west-2.amazonaws.com/data/catalogs/plants.json";
 
-    axios.get(url, { headers: {'Access-Control-Allow-Origin': '*'}}).then(response => {
-      categories = response.data.categories;
-      if(categories) {
+    try {
+      let res = await axios.get(categoriesURL, { headers: {'Access-Control-Allow-Origin': '*'}});
+      categories = res.data.categories;
+  
+      let res2 = await axios.get(plantsURL, { headers: {'Access-Control-Allow-Origin': '*'}});
+      plantsData = res2.data.plants;
+  
+      if(categories && plantsData) {
         setImages();
         addFarmToDB();  
       }
-    }).catch(function(error) {
+    } catch(error) {
       console.error(error);
-    })
-  }    
+    }
+  }
 
   const addFarmToDB = async function () {
     if(activeUser) {
@@ -141,5 +147,4 @@ const styles = StyleSheet.create({
   addBoxWrapper: {
     marginTop: "auto"
   }
-
 });
